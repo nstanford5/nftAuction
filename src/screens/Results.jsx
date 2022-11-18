@@ -3,8 +3,8 @@ import {loadStdlib} from '@reach-sh/stdlib';
 const stdlib = loadStdlib('ALGO');
 
 export function Results(){
-  const [highest] = useState(0);
-  const [last] = useState('Address');
+  const [highest] = useState();
+  const [last] = useState();
 
   return(
     <div className='section'>

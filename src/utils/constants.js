@@ -1,10 +1,11 @@
 export const views = {
-  CONNECT_ACCOUNT: 'Connect account',
-  SELL_OR_BUY: 'Choose your role',
+  CONNECT_ACCOUNT: 'ConnectAccount',
+  SELL_OR_BUY: 'SelectRole',
+  SALE_INFO: 'SaleInfo',
 
-  AUCTION_READY: 'Waiting for Buyer',
+  AUCTION_READY: 'WaitingForBuyer',
   RESULTS: 'Results',
 
-  BID: 'Bid',
+  BID: 'Bidf',
   WAITING: 'Waiting',
 };

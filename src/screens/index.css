@@ -19,8 +19,17 @@
   transform: scale(110%);
 }
 
+.textline{
+  width: 100px;
+  height: 20px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .textarea{
-  width: 500px;
+  width: 350px;
   height: 300px;
   padding: 20px;
   display: flex;
