@@ -122,6 +122,7 @@ range: 10-15
 Here is an example of selling an Algorand MainNet Token, our beloved 'Reach Thank You Token' and providing it as a string. [Source for token id](https://algoexplorer.io/asset/545293434)\
 ```const REACH_THANK_YOU = '545293434';```\
 ```const balance = await stdlib.balanceOf(wallet, REACH_THANK_YOU);```\
+Where wallet here has been previously assigned.
 :::
 
 NFTs are represented differently on different consensus networks. 
@@ -162,7 +163,7 @@ range: 81-85
 - Line 82 uses `stdlib.balancesOf` to check account balances related to the NFT id.
 
 We are at the end of our `mjs` file, but we don't want to get too far ahead of ourselves yet. 
-We still need to setup the Auction in the Reach (`rsh`) file.
+We still need to setup the Auction in the Reach `rsh` file.
 
 ## Bidding with ParallelReduce
 
@@ -176,7 +177,6 @@ range: 35-40
 - Line 36-40 sets up LHS values to track in the `{!rsh} parallelReduce` and gives them initial values.
 
 Now we will use the `{!rsh} parallelReduce.define()` block to track the LHS value `lastPrice`.
-
 ```
 load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
@@ -205,16 +205,15 @@ range: 47-58
 - Line 47 declares our function as an api macro (`.api_`) taking one argument `bid`.
 - Line 48 is a dynamic check that the number provided for the bid is higher than the `lastPrice` of the NFT.
 - Line 49 starts the outer return. Prompts the caller to pay `bid` and declares our return function as `notify`.
-- Line 50 invokes that return function with `highestBidder, lastPrice` values.
+- Line 50 invokes that return function with `highestBidder, lastPrice` values, sending these to the caller.
 - Line 51 checks that this is not the first bid. If it is the first bid, we have no previous bidder to refund.
 - Line 54 stores the callers Address. As a reminder, `this` in an API call refers to the callers address.
 - Line 55 passes bid values to the Creators frontend.
 - Line 56 starts the inner return to update our `{!rsh} parallelReduce` values.
 
-
 ## Timeout
 
-Now we can setup a timeout for callers who don't respond with a bid.
+Now we can setup a timeout for callers who don't respond with a bid. Timeouts here are for convenience, a Bidder who does not respond with their bid does not negatively effect the security of this DApp.
 ```
 load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
@@ -271,8 +270,8 @@ md5: 0205f5a034e69c1258ec38f37c92b937
 range: 41-54
 ```
 - Line 41 starts a `try...catch` block, we expect some exceptions from these calls.
-- Line 42 gets the NFT view information and uses our `getTok` function to return the right data type, based on network connector mode.
-- Lines 43-44 are similar to Line 42 minus the `getTok` function
+- Line 42 gets the NFT view information and uses our `{!mjs} getTok` function to return the right data type, based on network connector mode.
+- Lines 43-44 are similar to Line 42 minus the `{!mjs} getTok` function
 - Line 48 is our API call. We pass in the `bid` and grab the returned values.
 
 Just a few more lines and we are ready to run our tests.
