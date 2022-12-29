@@ -2,11 +2,12 @@ md5: 0205f5a034e69c1258ec38f37c92b937  index.mjs
 md5: ae17b7d75b615cbac282ca0d776c6735  index.rsh
 # {#nft-auction-api} NFT Auction
 
-This tutorial will teach you how to build an NFT Aution DApp with Reach.
+This tutorial will teach you how to build an NFT Auction DApp with Reach.
 
-It *probably* will not increase the floor price of your favorite NFT line. But, you never really know until you try.
+It *probably* will not increase the floor price of your favorite NFT line, but you never know until you try.
 
-We are assuming prior knowledge of Reach. We recommend working through the [tutorials](https://docs.reach.sh/tut/#tuts) in order.
+We are assuming prior knowledge of Reach. 
+We recommend working through the [tutorials](https://docs.reach.sh/tut/#tuts) in order.
 
 We assume you are working in a project folder called `nft-auction-api`:
 ```cmd
@@ -21,34 +22,35 @@ $ touch index.rsh index.mjs
 
 ## Program Design
 
-The purpose of our program is to sell an NFT to the highest bidder. We'll need an Creator to establish the sale, provide the NFT, and allow an unknown number of Buyers to place bids in network tokens.
+The purpose of our program is to sell an NFT to the highest bidder. 
+We'll need a Creator to establish the sale, provide the NFT, and allow an unknown number of Buyers to place bids in network tokens.
 
 The contract will store the NFT until the deadline has passed and we have a winner for the auction.
 
-There are a few different options for how the contract actually processes the bid funding. In this implementation, we'll retain the `{!rsh highestBid}` in the contract account. If a new high bid is placed, we will return the previous amount to the previous bidder and retain the new `{!rsh highestBid}`.
+There are a few different options for how the contract actually processes the bid funding. In this implementation, we'll retain the value of `highestBid` in the contract account. If a new high bid is placed, we will return the previous amount to the previous bidder and retain the new `highestBid`.
 
 At the end of the Auction, the highest bidder is transferred the NFT and the contract transfers the network token funds to the Creator.
 
-Now that is outlined, we can define our users and their allowed functions/data.
+Next, we define our users and their functions.
 ```
 load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
 range: 1-13
 ```
 - Line 4 declares a single `{!rsh} Participant` identified as 'Creator'.
-- Line 5 declares a function `{!rsh} getSale` that will return an Object with sale parameters.
-- Line 10 declares an `{!rsh} auctionReady` function for notifying the frontend that the contract is ready to accept API calls for the auction.
+- Line 5 declares a function `getSale` that will return an Object with sale parameters.
+- Line 10 declares an `auctionReady` function for notifying the frontend that the contract is ready to accept API calls for the auction.
 - Line 11 is a function to share bid information with the Creator's frontend.
 - Line 12 is a function useful for displaying the results of the Auction.
 
-The final set of users in our application is the `{!rsh} bidder`. This set of users will all have the same functionality, so we define them as `{!rsh} API`.
+The final set of users in our application is the `bidder`. This set of users will all have the same functionality, so we define them as `{!rsh} API`.
 ```
 load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
 range: 14-16
 ```
-- Line 14 declares our `{!rsh} Bidder` `{!rsh} API`.
-- Line 15 declares the function these users will have access to `{!rsh} bid`.
+- Line 14 declares our `Bidder` `{!rsh} API`.
+- Line 15 declares the function these users will have access to `bid`.
 
 It will also be useful for the frontend implementation for us to define some `{!rsh} View` information.
 ```
@@ -56,9 +58,11 @@ load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
 range: 17-22
 ```
-- Line 17 declares an anonomous `{!rsh} View`.
+- Line 17 declares an anonymous `{!rsh} View`.
 - Line 18-20 set the types and identifiers for the information.
-- Line 22 calls `{!rsh} init()` to initialize our Application.
+- Line 22 calls `{!rsh} init`() to initialize our Application.
+
+## Set the Sale
 
 Now that our users and their data is defined, we can start moving through the states of our application.
 
@@ -69,10 +73,10 @@ md5: ae17b7d75b615cbac282ca0d776c6735
 range: 24-29
 ```
 - Line 24 starts a local step for Creator
-- Line 25 declassifies the paramaters returned from the `{!rsh} getSale()` function
+- Line 25 declassifies the parameters returned from the `getSale()` function
 - Line 27 publishes this information to the blockchain
 - Line 28 sets a constant in consensus to denote the amount of NFTs
-- Line 29 calls `{!rsh} commit()` to move to the next Step of the program
+- Line 29 calls `{!rsh} commit`() to move to the next Step of the program
 
 ```
 load: /examples/nft-auction-api/index.rsh
@@ -84,7 +88,8 @@ range: 30-32
 - Line 31 notifies the frontend that the contract has been deployed and is ready to start receiving API calls.
 - Line 32 is a static assertion that, at this point in the program, the contract account must hold the one NFT. If not, return the message at compile time.
 
-Now that we have this information set, we use our `{!rsh} View` to easily expose this information to the frontend. Now our Bidders can see the sale information, as it lives on the blockchain, without spending any transaction fees.
+Now that we have this information set, we use our `{!rsh} View` to easily expose this information to the frontend. 
+Now our Bidders can see the sale information, as it lives on the blockchain, without spending any transaction fees.
 
 ```
 load: /examples/nft-auction-api/index.rsh
@@ -102,23 +107,25 @@ md5: 0205f5a034e69c1258ec38f37c92b937
 range: 1-9
 ```
 
-Next, we automate the NFT process. `{!rsh} launchToken()` is simply a convenient way to test with NFTs here in devnet. When moving to testnet and ultimately MainNet, you will likely allow the Creator to provide the NFT id as a string.
+Next, we automate the NFT process. `{!js} launchToken`() is simply a convenient way to test with NFTs in devnet. 
+When moving to testnet and ultimately MainNet, you will likely allow the Creator to provide the NFT id as a string.
 ```
 load: /examples/nft-auction-api/index.mjs
 md5: 0205f5a034e69c1258ec38f37c92b937
 range: 10-15
 ```
-- Line 11 uses `{!rsh} launchToken()` to create a new devnet NFT
+- Line 11 uses `{!js} launchToken`() to create a new devnet NFT
 - Line 12-14 set constants related to the parameters
-- Line 15 sets the parameters object to include those constants. This will eventually be passed to  the backend.
+- Line 15 sets the parameters object to include those constants. This will eventually be passed to the backend.
 :::note
-Here is an example of selling  the Algorand MainNet Token, our beloved 'Reach Thank You Token'.
+Here is an example of selling the Algorand MainNet Token, our beloved 'Reach Thank You Token'.
 ```const REACH_THANK_YOU = '545293434';```
 ```const balance = await stdlib.balanceOf(wallet, REACH_THANK_YOU);```
 [Source for token id](https://algoexplorer.io/asset/545293434)
 :::
 
-NFTs are represented differently on different consensus networks. On Algorand they will return a `BigNumber` and on EVM-based networks they will return an `{!rsh} Address`.
+NFTs are represented differently on different consensus networks. 
+On Algorand they will return a `BigNumber` and on EVM-based networks they will return an `{!rsh} Address`.
 
 So we define a helper function to differentiate between networks.
 ```
@@ -130,7 +137,8 @@ range: 17-23
 - Line 18 checks if the connector is set to 'ALGO'.
 - Line 19-21 return values accordingly.
 
-Let's jump down our test suite and define the tests for our Creator. Note the significant line number change.
+Let's jump down our test suite and define the tests for our Creator. 
+Note the significant line number change.
 ```
 load: /examples/nft-auction-api/index.mjs
 md5: 0205f5a034e69c1258ec38f37c92b937
@@ -140,7 +148,7 @@ range: 64-79
 - Line 65 starts the promise on the contract handle for our Creator object.
 - Lines 66-79 are simple JavaScript functions to be called by the backend.
 
-While we are here, at the end of our test suite, lets add the final balance logs.
+While we are here, at the end of our test suite, let's add the final balance logs.
 ```
 load: /examples/nft-auction-api/index.mjs
 md5: 0205f5a034e69c1258ec38f37c92b937
@@ -149,7 +157,8 @@ range: 81-85
 - Line 81 starts a loop for all members of the `bidders` array.
 - Line 82 uses `stdlib.balancesOf` to check account balances related to the NFT id.
 
-We are at the end of our `mjs` file, but we don't want to get too far ahead of ourselves yet. We still need to setup the Auction in the Reach (`rsh`) file.
+We are at the end of our `mjs` file, but we don't want to get too far ahead of ourselves yet. 
+We still need to setup the Auction in the Reach (`rsh`) file.
 
 Hopefully you are becoming familiar with Reach at this point and you have seen the immensely useful control structure `{!rsh} parallelReduce`.
 ```
@@ -157,10 +166,10 @@ load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
 range: 35-40
 ```
-- Line 35 uses the `{!rsh} lenInBlocks` parameter provided and adds that to the last known consensus time. This creates a deadline at `{!rsh} lenInBlocks` in the future.
+- Line 35 uses the `lenInBlocks` parameter provided and adds that to the last known consensus time. This creates a deadline at `lenInBlocks` in the future.
 - Line 36-40 sets up LHS values to track in the `{!rsh} parallelReduce` and gives them initial values.
 
-Now we will use the `{!rsh} .define()` block of the `{!rsh} parallelReduce` to track the LHS value `{!rsh} lastPrice`.
+Now we will use the `{!rsh} parallelReduce.define()` block to track the LHS value `lastPrice`.
 
 ```
 load: /examples/nft-auction-api/index.rsh
@@ -177,20 +186,22 @@ range: 44-46
 ```
 We won't walk through each of these for this one, but instead focus on the repeating pattern that emerges from this style of Reach DApp.
 
-Most importantly we note the relationship between the contract balance and our variables. We track the balance of both network and non-network tokens, very tightly. This makes the Reach compiler (and therefore, us) happy.
+Most importantly, we note the relationship between the contract balance and our variables. 
+We track the balance of both network and non-network tokens, very tightly. 
+This makes the Reach compiler (and therefore, us) happy.
 
-Now let's setup our API member function `{!rsh} Bidder.bid`.
+Now let's setup our API member function `Bidder.bid`.
 ```
 load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
 range: 47-58
 ```
-- Line 47 declares our function as an api macro (`{!rsh} .api_`) taking one argument `{!rsh} bid`.
-- Line 48 is a dynamic check that the number provided for the bid is higher than the `{!rsh} lastPrice` of the NFT.
-- Line 49 starts the outer return. Prompts the caller to pay `{!rsh} bid` and declares our return function as `{!rsh} notify`.
-- Line 50 invokes that return function with `{!rsh} highestBidder, lastPrice` values.
+- Line 47 declares our function as an api macro (`.api_`) taking one argument `bid`.
+- Line 48 is a dynamic check that the number provided for the bid is higher than the `lastPrice` of the NFT.
+- Line 49 starts the outer return. Prompts the caller to pay `bid` and declares our return function as `notify`.
+- Line 50 invokes that return function with `highestBidder, lastPrice` values.
 - Line 51 checks that this is not the first bid. If it is the first bid, we have no previous bidder to refund.
-- Line 54 stores the callers Address. As a reminder, `{!rsh} this` in an API call refers to the callers address.
+- Line 54 stores the callers Address. As a reminder, `this` in an API call refers to the callers address.
 - Line 55 passes bid values to the Creators frontend.
 - Line 56 starts the inner return to update our `{!rsh} parallelReduce` values.
 
@@ -200,8 +211,8 @@ load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
 range: 59-62
 ```
-- Line 59 starts that timeout and passes it our previously declared `end` constant.
-- Line 60 is a necessary dummy publish.
+- Line 59 starts the timeout and passes it our previously declared `end` constant.
+- Line 60 is a necessary dummy `{!rsh} publish`.
 - Line 61 returns LHS values as they are.
 
 We can now write the final transfer pattern.
@@ -211,7 +222,7 @@ md5: ae17b7d75b615cbac282ca0d776c6735
 range: 64-68
 ```
 - Line 64 transfers the nft to the winner.
-- Line 65 is anothe check for the special condition `{!rsh} isFirstBid`.
+- Line 65 is another check for the special condition `isFirstBid`.
 - Line 66 logs information to the Creator frontend.
 
 That is all for our backend Reach file! Isn't this fun!?
@@ -225,7 +236,8 @@ range: 25-28
 - Line 27 is the function we'll call at `auctionReady`, when we are ready to start making API calls.
 - Line 28 sets a variable for the minimum bid amount. This will be added to by each of our simulated users.
 
-Now the functionality for each of our users will live mostly in `runBidder`. We are automating this process, so we'll let the console logs tell you who is doing what.
+Now the functionality for each of our users will live mostly in `runBidder`. 
+We are automating this process, so we'll let the console logs tell you who is doing what.
 ```
 load: /examples/nft-auction-api/index.mjs
 md5: 0205f5a034e69c1258ec38f37c92b937
@@ -238,7 +250,8 @@ range: 29-40
 - Line 37 gets the contract handle for the Creators contract instance.
 - Line 38 defines a helper function for returning the balance of the account.
 
-Our users are alive (sort of) and deciding to make bids and API calls. Now we'll show our exposed `{!rsh} View` information related to the sale.
+Our users are alive (sort of) and deciding to make bids and API calls. 
+Now we'll show our exposed `{!rsh} View` information related to the sale.
 ```
 load: /examples/nft-auction-api/index.mjs
 md5: 0205f5a034e69c1258ec38f37c92b937
@@ -309,5 +322,5 @@ Claire has 90.061712366560260168 ETH and 1 of the NFT
 
 Congrats on another useful Reach DApp under your belt!
 
-To expand upon this, you could implement a standard web2 frontend with a framework like React. We will be adding this piece to this tutorial soon, maybe you can beat us to it?
-
+To expand upon this, you could implement a standard web2 frontend with a framework like React. 
+We will be adding this piece to this tutorial soon, maybe you can beat us to it?
