@@ -88,6 +88,8 @@ range: 30-32
 - Line 31 notifies the frontend that the contract has been deployed and is ready to start receiving API calls.
 - Line 32 is a static assertion that, at this point in the program, the contract account must hold the one NFT. If not, return the message at compile time.
 
+## Use the View
+
 Now that we have this information set, we use our `{!rsh} View` to easily expose this information to the frontend. 
 Now our Bidders can see the sale information, as it lives on the blockchain, without spending any transaction fees.
 
@@ -106,6 +108,8 @@ load: /examples/nft-auction-api/index.mjs
 md5: 0205f5a034e69c1258ec38f37c92b937
 range: 1-9
 ```
+
+## Launch the Token
 
 Next, we automate the NFT process. `{!js} launchToken`() is simply a convenient way to test with NFTs in devnet. 
 When moving to testnet and ultimately MainNet, you will likely allow the Creator to provide the NFT id as a string.
@@ -137,6 +141,8 @@ range: 17-23
 - Line 18 checks if the connector is set to 'ALGO'.
 - Line 19-21 return values accordingly.
 
+## Creator Tests
+
 Let's jump down our test suite and define the tests for our Creator. 
 Note the significant line number change.
 ```
@@ -147,6 +153,8 @@ range: 64-79
 - Line 64 sets the contract handle with `accCreator`.
 - Line 65 starts the promise on the contract handle for our Creator object.
 - Lines 66-79 are simple JavaScript functions to be called by the backend.
+
+## Log the Balance
 
 While we are here, at the end of our test suite, let's add the final balance logs.
 ```
@@ -159,6 +167,8 @@ range: 81-85
 
 We are at the end of our `mjs` file, but we don't want to get too far ahead of ourselves yet. 
 We still need to setup the Auction in the Reach (`rsh`) file.
+
+## Bidding with ParallelReduce
 
 Hopefully you are becoming familiar with Reach at this point and you have seen the immensely useful control structure `{!rsh} parallelReduce`.
 ```
@@ -205,6 +215,9 @@ range: 47-58
 - Line 55 passes bid values to the Creators frontend.
 - Line 56 starts the inner return to update our `{!rsh} parallelReduce` values.
 
+
+## Timeout
+
 Now we can setup a timeout for callers who don't respond with a bid.
 ```
 load: /examples/nft-auction-api/index.rsh
@@ -214,6 +227,8 @@ range: 59-62
 - Line 59 starts the timeout and passes it our previously declared `end` constant.
 - Line 60 is a necessary dummy `{!rsh} publish`.
 - Line 61 returns LHS values as they are.
+
+## Transfer Pattern
 
 We can now write the final transfer pattern.
 ```
@@ -226,6 +241,8 @@ range: 64-68
 - Line 66 logs information to the Creator frontend.
 
 That is all for our backend Reach file! Isn't this fun!?
+
+## Back to the Test Suite
 
 Before we have too much fun, let's finish writing our frontend test suite.
 ```
@@ -270,6 +287,8 @@ load: /examples/nft-auction-api/index.mjs
 md5: 0205f5a034e69c1258ec38f37c92b937
 range: 56-62
 ```
+
+## Run a Test
 
 That is everything we need! 
 
