@@ -119,10 +119,9 @@ range: 10-15
 - Line 15 sets the parameters object to include those constants. This will eventually be passed to the backend.
 
 :::note
-Here is an example of selling an Algorand MainNet Token, our beloved 'Reach Thank You Token' and providing it as a string.\
+Here is an example of selling an Algorand MainNet Token, our beloved 'Reach Thank You Token' and providing it as a string. [Source for token id](https://algoexplorer.io/asset/545293434)\
 ```const REACH_THANK_YOU = '545293434';```\
 ```const balance = await stdlib.balanceOf(wallet, REACH_THANK_YOU);```\
-[Source for token id](https://algoexplorer.io/asset/545293434)
 :::
 
 NFTs are represented differently on different consensus networks. 
