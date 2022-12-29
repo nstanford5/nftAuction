@@ -108,20 +108,20 @@ range: 1-9
 ## Launch the Token
 
 Next, we automate the NFT process. `{!js} launchToken`() is simply a convenient way to test with NFTs in devnet. 
-When moving to testnet and ultimately MainNet, you will likely allow the Creator to provide the NFT id as a string.
+When moving to TestNet and ultimately MainNet, you will likely allow the Creator to provide the NFT id as a string.
 ```
 load: /examples/nft-auction-api/index.mjs
 md5: 0205f5a034e69c1258ec38f37c92b937
 range: 10-15
 ```
-- Line 11 uses `{!js} launchToken`() to create a new devnet NFT
-- Line 12-14 set constants related to the parameters
+- Line 11 uses `{!js} launchToken`() to create a new devnet NFT.
+- Line 12-14 set constants related to the parameters.
 - Line 15 sets the parameters object to include those constants. This will eventually be passed to the backend.
 
 :::note
-Here is an example of selling an Algorand MainNet Token, our beloved 'Reach Thank You Token' and providing it as a string.
+Here is an example of selling an Algorand MainNet Token, our beloved 'Reach Thank You Token' and providing it as a string.\
 ```const REACH_THANK_YOU = '545293434';```\
-```const balance = await stdlib.balanceOf(wallet, REACH_THANK_YOU);```
+```const balance = await stdlib.balanceOf(wallet, REACH_THANK_YOU);```\
 [Source for token id](https://algoexplorer.io/asset/545293434)
 :::
 
