@@ -1,5 +1,3 @@
-md5: 0205f5a034e69c1258ec38f37c92b937  index.mjs
-md5: ae17b7d75b615cbac282ca0d776c6735  index.rsh
 # {#nft-auction-api} NFT Auction
 
 This tutorial will teach you how to build an NFT Auction DApp with Reach.
@@ -27,7 +25,7 @@ We'll need a Creator to establish the sale, provide the NFT, and allow an unknow
 
 The contract will store the NFT until the deadline has passed and we have a winner for the auction.
 
-There are a few different options for how the contract actually processes the bid funding. In this implementation, we'll retain the value of `highestBid` in the contract account. If a new high bid is placed, we will return the previous amount to the previous bidder and retain the new `highestBid`.
+There are a few different options for how the contract actually processes the bid funding. In this implementation, we'll retain the amount of `highestBid` in the contract account. If a new high bid is placed, we will return the previous amount to the previous bidder and retain the new `highestBid`.
 
 At the end of the Auction, the highest bidder is transferred the NFT and the contract transfers the network token funds to the Creator.
 
@@ -72,18 +70,17 @@ load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
 range: 24-29
 ```
-- Line 24 starts a local step for Creator
-- Line 25 declassifies the parameters returned from the `getSale()` function
-- Line 27 publishes this information to the blockchain
-- Line 28 sets a constant in consensus to denote the amount of NFTs
-- Line 29 calls `{!rsh} commit`() to move to the next Step of the program
+- Line 24 starts a local step for Creator.
+- Line 25 declassifies the parameters returned from the `getSale()` function.
+- Line 27 publishes this information to the blockchain.
+- Line 28 sets a constant in consensus to denote the amount of NFTs.
+- Line 29 calls `{!rsh} commit`() to move to the next Step of the program.
 
 ```
 load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
 range: 30-32
 ```
-
 - Line 30 prompts the users account to sign the transaction to pay their NFT into the contract account.
 - Line 31 notifies the frontend that the contract has been deployed and is ready to start receiving API calls.
 - Line 32 is a static assertion that, at this point in the program, the contract account must hold the one NFT. If not, return the message at compile time.
@@ -92,7 +89,6 @@ range: 30-32
 
 Now that we have this information set, we use our `{!rsh} View` to easily expose this information to the frontend. 
 Now our Bidders can see the sale information, as it lives on the blockchain, without spending any transaction fees.
-
 ```
 load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
@@ -121,9 +117,10 @@ range: 10-15
 - Line 11 uses `{!js} launchToken`() to create a new devnet NFT
 - Line 12-14 set constants related to the parameters
 - Line 15 sets the parameters object to include those constants. This will eventually be passed to the backend.
+
 :::note
-Here is an example of selling the Algorand MainNet Token, our beloved 'Reach Thank You Token'.
-```const REACH_THANK_YOU = '545293434';```
+Here is an example of selling an Algorand MainNet Token, our beloved 'Reach Thank You Token' and providing it as a string.
+```const REACH_THANK_YOU = '545293434';```\
 ```const balance = await stdlib.balanceOf(wallet, REACH_THANK_YOU);```
 [Source for token id](https://algoexplorer.io/asset/545293434)
 :::
