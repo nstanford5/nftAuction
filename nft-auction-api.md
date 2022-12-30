@@ -2,9 +2,8 @@
 
 This tutorial will teach you how to build an NFT Auction DApp with Reach.
 
-It *probably* will not increase the floor price of your favorite NFT line, but you never know until you try.
+It *probably* will not increase the floor price of your favorite NFT line, but you never really know until you try. And we greatly appreciate effort here at Reach, where this tutorial assumes you have prior knowledge of us.
 
-We are assuming prior knowledge of Reach. 
 We recommend working through the [tutorials](https://docs.reach.sh/tut/#tuts) in order.
 
 We assume you are working in a project folder called `nft-auction-api`:
@@ -96,7 +95,7 @@ range: 33-34
 ```
 - Lines 33-34 set respective view identifiers to previously published constants for the minimum bid and NFT id.
 
-Now that the parameters of our sale are set, we can go to our frontend (`mjs`) file and start building our test suite.
+Now that the parameters of our sale are set, we can go to our frontend `mjs` file and start building our test suite.
 
 We'll start with basic setup and account tasks. We won't cover these line by line.
 ```
@@ -125,7 +124,7 @@ Here is an example of selling an Algorand MainNet Token, our beloved 'Reach Than
 Where wallet here has been previously assigned.
 :::
 
-NFTs are represented differently on different consensus networks. 
+NFTs are represented differently by JavaScript frontends on different consensus networks. 
 On Algorand they will return a `BigNumber` and on EVM-based networks they will return an `{!rsh} Address`.
 
 So we define a helper function to differentiate between networks.
@@ -202,7 +201,7 @@ load: /examples/nft-auction-api/index.rsh
 md5: ae17b7d75b615cbac282ca0d776c6735
 range: 47-58
 ```
-- Line 47 declares our function as an api macro (`.api_`) taking one argument `bid`.
+- Line 47 declares our function as an api macro `.api_` taking one argument `bid`.
 - Line 48 is a dynamic check that the number provided for the bid is higher than the `lastPrice` of the NFT.
 - Line 49 starts the outer return. Prompts the caller to pay `bid` and declares our return function as `notify`.
 - Line 50 invokes that return function with `highestBidder, lastPrice` values, sending these to the caller.
